@@ -19,6 +19,7 @@ int main(){
     // Exemplo:
     // int *p_int;
     double * p_d {nullptr};
+    // double * p_d;
     // int* p_intt;
 
     int x {20}; // declarando uma variável x
