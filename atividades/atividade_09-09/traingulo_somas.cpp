@@ -12,6 +12,25 @@
 #include <string>
 using namespace std;
 
+void somaVetores(int* vetor, int* vetorNovo, int n, int i = 0) {
+    if (i == n - 1) {
+        return;
+    }
+    vetorNovo[i] = vetor[i] + vetor[i + 1];
+    somaVetores(vetor, vetorNovo, n, i + 1);
+}
+
+void imprimeVetor(int* vetor, int ini, int len) {
+    if (ini == 0) cout << "[";
+    if (ini > 0) cout << ", ";
+    if (ini == len - 1) {
+        cout << vetor[len - 1] << "]\n";
+        return;
+    }
+    cout << vetor[ini];
+    imprimeVetor(vetor, ini + 1, len);
+}
+
 void imprimeTriangulo(int* vetor, int n) {
     // caso base:
     if (n == 1) {
@@ -21,18 +40,12 @@ void imprimeTriangulo(int* vetor, int n) {
 
     int* novoVetor = new int[n - 1];
 
-    for (int i = 0; i < n - 1; i++) {
-        novoVetor[i] = vetor[i] + vetor[i + 1];
-    }
+    somaVetores(vetor, novoVetor, n);
 
     imprimeTriangulo(novoVetor, n - 1);  // chamada recursiva
 
-    cout << "[";
-    for (int i = 0; i < n; i++) {
-        cout << vetor[i];
-        if (i < n - 1) cout << ", ";
-    }
-    cout << "]" << endl;
+    imprimeVetor(vetor, 0, n);
+
     delete[] novoVetor;
 }
 
