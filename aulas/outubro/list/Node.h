@@ -26,7 +26,7 @@ struct Node {
      * @brief Destroy the Node object
      *
      */
-    ~Node() { std::cout << "Node " << this->data << " destruído" << std::endl; }
+    ~Node() { std::cout << "Node " << this << " destruído" << std::endl; }
 };
 
 #endif  // NODE_H

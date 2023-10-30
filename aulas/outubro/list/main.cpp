@@ -8,8 +8,10 @@ int main() {
     for (int i = 0; i < 10; i++) {
         lst.push_back(i);
     }
-    while (!lst.empty()) {
-        cout << lst.back() << " ";
-        lst.pop_back();
+
+    // lst.clear();
+
+    for (auto& e : lst) {
+        cout << e << " ";
     }
 }
