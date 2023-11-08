@@ -2,6 +2,7 @@
 #define BINARY_TREE_H
 #include <iostream>
 #include <sstream>
+#include <stack>
 
 #include "Node.h"
 
@@ -16,8 +17,7 @@ class BinaryTree {
 
     // Construtor que cria uma arvore a
     // partir de outras duas
-    BinaryTree(const Type& val, BinaryTree<Type>& tleft,
-               BinaryTree<Type>& tright) {
+    BinaryTree(const Type& val, BinaryTree<Type>& tleft, BinaryTree<Type>& tright) {
         m_root = new Node<Type>(val, tleft.m_root, tright.m_root);
         tleft.m_root = tright.m_root = nullptr;
     }
@@ -35,10 +35,65 @@ class BinaryTree {
     // Funcao publica que imprime as chaves em
     // pre-ordem
     void preOrder() const { preOrder(m_root); }
+
+    void iterativePreOrdem() const {
+        std::stack<Node<Type>*> pilha;
+        Node<Type>* node = m_root;
+        while (node != nullptr || !pilha.empty()) {
+            if (node != nullptr) {
+                std::cout << node->data << " ";
+                pilha.push(node);
+                node = node->left;
+            } else {
+                node = pilha.top();
+                pilha.pop();
+                node = node->right;
+            }
+        }
+    }
+
     // pos-ordem
     void postOrder() const { postOrder(m_root); }
+
+    void iterativePostOrder() const {
+        std::stack<Node<Type>*> pilha;
+        Node<Type>* node = m_root;
+        Node<Type>* last = nullptr;
+        while (node != nullptr || !pilha.empty()) {
+            if (node != nullptr) {
+                pilha.push(node);
+                node = node->left;
+            } else {
+                Node<Type>* top = pilha.top();
+                if (top->right != nullptr && top->right != last) {
+                    node = top->right;
+                } else {
+                    std::cout << top->data << " ";
+                    last = top;
+                    pilha.pop();
+                }
+            }
+        }
+    }
+
     // ordem simetrica
     void inOrder() const { inOrder(m_root); }
+
+    void iterativeInOrder() const {
+        std::stack<Node<Type>*> pilha;
+        Node<Type>* node = m_root;
+        while (node != nullptr || !pilha.empty()) {
+            if (node != nullptr) {
+                pilha.push(node);
+                node = node->left;
+            } else {
+                node = pilha.top();
+                pilha.pop();
+                std::cout << node->data << " ";
+                node = node->right;
+            }
+        }
+    }
 
     // Funcao publica que retorna se um certo valor
     // esta na arvore
