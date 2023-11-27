@@ -4,12 +4,37 @@
 #include <vector>
 using namespace std;
 
+/* >>>>>>>>
+10 30
+##############################
+#  #        ## # # ##       ##
+## # ## ## ##    # #  ## ##  #
+## ###  #I    ##   ####   ## #
+#  ##  ###########   #  #  # #
+# ##  ## F # #   ### ####### #
+# ## ### ###   #   # ##   #  #
+#  # # # #   ##### # #  # # ##
+##   #     #     #     ##    #
+##############################
+========
+##############################
+#  #        ## # # ##       ##
+## # ## ## ##....# #  ## ##  #
+## ###  #.....##...####   ## #
+#  ##  ###########...#  #  # #
+# ##  ##.. # #...###.####### #
+# ## ###.###...#...#.##   #  #
+#  # # #.#...#####.#.#  # # ##
+##   #  ...#     #...  ##    #
+##############################
+<<<<<<<< */
+
 struct Pos {
     int l;
     int c;
 };
 
-// retorna um vetor com todos os vizinhos da posição p
+// Retorna um vetor com todos os vizinhos da posição p
 vector<Pos> get_vizinhos(Pos p) {
     return {{p.l, p.c - 1}, {p.l - 1, p.c}, {p.l, p.c + 1}, {p.l + 1, p.c}};
 }
@@ -17,27 +42,26 @@ vector<Pos> get_vizinhos(Pos p) {
 void resolve(vector<string>& mat, Pos inicio, Pos fim) {
     stack<Pos> pilha;
     pilha.push(inicio);
-
     while (!pilha.empty()) {
         Pos topo = pilha.top();
         pilha.pop();
-
-        if (topo.l == fim.l && topo.c == fim.c) return;
-
-        vector<Pos> vizinhosNaoVisitados;
-        for (Pos vizinho : get_vizinhos(topo)) {
-            if (mat[vizinho.l][vizinho.c] == ' ') {
-                mat[vizinho.l][vizinho.c] = '.';
-                vizinhosNaoVisitados.push_back(vizinho);
+        if (topo.l < 0 || topo.l >= mat.size() || topo.c < 0 ||
+            topo.c >= mat[0].size())
+            continue;
+        if (mat[topo.l][topo.c] == '#') continue;
+        if (mat[topo.l][topo.c] == ' ') {
+            mat[topo.l][topo.c] = '.';
+            for (Pos vizinho : get_vizinhos(topo)) pilha.push(vizinho);
+        }
+        if (topo.l == fim.l && topo.c == fim.c) break;
+        // Verificar se o caminho atual é inválido
+        if (pilha.empty()) {
+            // Reverter as alterações feitas na matriz
+            for (string& line : mat) {
+                for (char& c : line) {
+                    if (c == '.') c = ' ';
+                }
             }
-        }
-
-        if (vizinhosNaoVisitados.empty()) {
-            pilha.pop();
-        }
-
-        for (Pos vizinho : vizinhosNaoVisitados) {
-            pilha.push(vizinho);
         }
     }
 }

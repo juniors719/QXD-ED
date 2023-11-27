@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    int n = 500000;
+    int n = 100000;
     int *v1 = new int[n];
     int *v2 = new int[n];
     int *v3 = new int[n];
@@ -21,15 +21,25 @@ int main() {
     auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
     cout << "Insertion Sort: " << duration.count() << " microseconds" << endl;
 
-    start = chrono::system_clock::now();
-    selectionSort(v2, n);
-    end = chrono::system_clock::now();
-    duration = chrono::duration_cast<chrono::microseconds>(end - start);
-    cout << "Selection Sort: " << duration.count() << " microseconds" << endl;
+    // start = chrono::system_clock::now();
+    // selectionSort(v2, n);
+    // end = chrono::system_clock::now();
+    // duration = chrono::duration_cast<chrono::microseconds>(end - start);
+    // cout << "Selection Sort: " << duration.count() << " microseconds" << endl;
 
     start = chrono::system_clock::now();
-    quickSort(v3, 0, n - 1);
+    mergeSort(v3, 0, n - 1);
+    end = chrono::system_clock::now();
+    duration = chrono::duration_cast<chrono::microseconds>(end - start);
+    cout << "Merge Sort: " << duration.count() << " microseconds" << endl;
+
+    start = chrono::system_clock::now();
+    quickSort(v2, 0, n - 1);
     end = chrono::system_clock::now();
     duration = chrono::duration_cast<chrono::microseconds>(end - start);
     cout << "Quick Sort: " << duration.count() << " microseconds" << endl;
+
+    delete[] v1;
+    delete[] v2;
+    delete[] v3;
 }

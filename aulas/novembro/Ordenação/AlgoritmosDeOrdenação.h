@@ -141,4 +141,55 @@ void quickSort(int A[], int l, int r) {
 
 // #######################################################################################################################
 
+// MERGE SORT
+
+// O Merge Sort é notável por sua eficiência na ordenação de grandes conjuntos de dados e pela
+// garantia de uma complexidade de tempo O(n log n), onde "n" é o número de elementos no array.
+// No entanto, um ponto a ser observado é que o Merge Sort consome espaço adicional, pois requer
+// arrays temporários durante o processo de mesclagem.
+
+// Estratégia de dividir e conquistar
+// Problema de intercalar dosi subvetores ordenados:
+// - Dados dois subvetores A[p..q] e A[q+1..r], suponha que A[p..q] e A[q+1..r] estejam ordenados.
+// - Como intercalar os subvetores em um único subvetor ordenado A[p..r]?
+// Resposta: Intercalar os subvetores A[p..q] e A[q+1..r] em um único subvetor ordenado A[p..r] é
+// um problema relativamente simples. A ideia é manter um índice para cada subvetor, chamados de
+// i e j, e comparar os elementos A[i] e A[j] para cada i e j. Inicialmente, i = p e j = q+1.
+// A cada iteração, copiamos o menor dos dois elementos A[i] e A[j] para o subvetor auxiliar B[k].
+// Quando um dos subvetores for completamente copiado para B[k], todos os elementos restantes do
+// outro subvetor são copiados para B[k].
+// Ao final, é copiado todos os elementos de B para A.
+// Nota-se que é usado memória auxiliar para o vetor B[k].
+
+void intercals(int A[], int l, int q, int r) {
+    int *B = new int[r - l + 1];  // vetor auxiliar
+    int i = l;                    // i é o índice do primeiro elemento do primeiro subarray
+    int j = q + 1;                // j é o índice do primeiro elemento do segundo subarray
+    int k = 0;                    // k é o índice do primeiro elemento do vetor auxiliar
+    while (i <= q && j <= r) {    // enquanto i e j estiverem dentro dos limites do array
+        if (A[i] <= A[j])         // se o elemento i for menor ou igual ao elemento j
+            B[k++] = A[i++];      // o elemento i é copiado para o vetor auxiliar
+        else                      // se o elemento j for menor que o elemento i
+            B[k++] = A[j++];      // o elemento j é copiado para o vetor auxiliar
+    }
+    while (i <= q)                  // enquanto i estiver dentro dos limites do array
+        B[k++] = A[i++];            // o elemento i é copiado para o vetor auxiliar
+    while (j <= r)                  // enquanto j estiver dentro dos limites do array
+        B[k++] = A[j++];            // o elemento j é copiado para o vetor auxiliar
+    k = 0;                          // k é o índice do primeiro elemento do vetor auxiliar
+    for (int i = l; i <= r; i++) {  // i é o índice do primeiro elemento do array
+        A[i] = B[k++];              // o elemento k do vetor auxiliar é copiado para o array
+    }
+    delete[] B;  // libera a memória alocada para o vetor auxiliar
+}
+
+void mergeSort(int A[], int l, int r) {
+    if (l < r) {                 // se o índice do primeiro elemento for menor que o índice do último elemento
+        int q = (l + r) / 2;     // q é o índice do elemento do meio do array
+        mergeSort(A, l, q);      // ordena a primeira parte do array
+        mergeSort(A, q + 1, r);  // ordena a segunda parte do array
+        intercals(A, l, q, r);   // intercala as duas partes do array
+    }
+}
+
 #endif  // ALGORITMOSDEORDENACAO_H
